@@ -10,6 +10,8 @@ import com.devsu.util.MapperUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class ClientServiceImpl extends GenericServiceImpl<Client, Long> implements IClientService {
@@ -21,6 +23,12 @@ public class ClientServiceImpl extends GenericServiceImpl<Client, Long> implemen
     @Override
     protected IGenericRepository<Client, Long> getRepository() {
         return repository;
+    }
+
+    @Override
+    public Optional<ClientDTO> findClientByClientId(String clientId) {
+        return repository.findClientByClientId(clientId)
+                .map( client ->  mapperUtil.map(client, ClientDTO.class));
     }
 
     @Override

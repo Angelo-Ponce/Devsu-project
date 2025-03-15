@@ -36,6 +36,16 @@ public class ClientController {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(mapperUtil.map(obj, ClientDTO.class));
     }
 
+    @GetMapping("clientId/{clientId}")
+    public ResponseEntity<ClientDTO> findClientByClientId(@PathVariable("clientId") String clientId){
+        return service.findClientByClientId(clientId)
+                .map(client -> ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(client)
+                )
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public ResponseEntity<Void> save(@Valid @RequestBody ClientDTO clientDTO) {
         ClientDTO client = service.save(clientDTO, USER);
