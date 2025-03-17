@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: transaction-root
+  # Mostrar SQL en consola
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      # Estrategia de creacion de tablas (update, create, validate, none)
+      ddl-auto: update
+  # Configuracion del datasource
+  datasource:
+    url: jdbc:postgresql://localhost:5432/DEVSUDB
+    username: postgres
+    password: 12345
+    driver-class-name: org.postgresql.Driver
+  # KEYCLOAK CONFIG
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9595/realms/devsu-project
+          jwk-set-uri: http://localhost:9595/realms/devsu-project/protocol/openid-connect/certs
+server:
+  port: 8081
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      clientService:
+        failureRateThreshold: 50  # Si el 50% de llamadas fallan
+        slowCallRateThreshold: 50 # Superan el umbral de lentitud
+        slowCallDurationThreshold: 2s  # Considera lenta cualquier llamada mayor a 2s
+        permittedNumberOfCallsInHalfOpenState: 2 # Se permiten 2 llamadas de prueba antes de decidir si cerrar o reabrir el circuito
+        slidingWindowSize: 10 # El circuito evalua las ultimas 10 llamadas para calcular la tasa de fallos y lentitud
+        waitDurationInOpenState: 5s  # Reintenta despues de 5 segundos
+
