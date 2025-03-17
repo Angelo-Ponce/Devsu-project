@@ -10,8 +10,6 @@ import com.devsu.service.IAccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl extends GenericServiceImpl<Account, Long> implements IAccountService {

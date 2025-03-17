@@ -29,6 +29,12 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(MovementException.class)
+    public ResponseEntity<ErrorCustomResponse> handleMovementException(MovementException ex, WebRequest request) {
+        ErrorCustomResponse response = new ErrorCustomResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         String message = ex.getBindingResult().getAllErrors().stream()

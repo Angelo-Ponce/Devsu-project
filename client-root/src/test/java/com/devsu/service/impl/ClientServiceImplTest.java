@@ -67,6 +67,16 @@ class ClientServiceImplTest {
     }
 
     @Test
+    void givenFindClientByClientId_WhenEntityExists_ThenReturnEntity(){
+        when(mapperUtil.map(mockClient, ClientDTO.class)).thenReturn(mockClientDTO);
+        when(repository.findClientByClientId(mockClient.getClientId())).thenReturn(Optional.of(mockClient));
+
+        Optional<ClientDTO> result = clientService.findClientByClientId(mockClient.getClientId());
+        assertEquals(mockClient.getClientId(), result.get().getClientId());
+        verify(repository, times(1)).findClientByClientId(mockClient.getClientId());
+    }
+
+    @Test
     void givenSave_ThenSuccessfullySaveTheEntity_WhenTheEntityHasData(){
         when(mapperUtil.map(mockClientDTO, Client.class)).thenReturn(mockClient);
         when(repository.save(mockClient)).thenReturn(mockClient);
